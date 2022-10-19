@@ -1,11 +1,13 @@
 import os, marisa_trie
 from pathlib import Path
 from collections import Counter
-from rd_wr_util import rd_wr_module
+from russian_uncensor.rd_wr_util import rd_wr_module
+
+path_current_file = Path(__file__).parent
 
 
 class WordStats:
-    def __init__(self, dict_path, neg_words_fn=None, freq_letters_fn=None, bigrams_fn=None, trigrams_fn=None, debug=False):
+    def __init__(self, dict_path=None, neg_words_fn=None, freq_letters_fn=None, bigrams_fn=None, trigrams_fn=None, debug=False):
         """ Init WordStats class.
 
         :param dict_path: common path to data files dir (str).
@@ -17,11 +19,9 @@ class WordStats:
         :return:
         """
         # File paths:
-        dict_path = Path(dict_path)
-        if not dict_path.is_dir():
-            assert False, f'Dir path "{dict_path}" not found!'
-        self.dict_path = dict_path
-        self.neg_words_filename = self.dict_path/'words_neg.txt' if neg_words_fn is None else self.dict_path/neg_words_fn
+        self.dict_path = Path.joinpath(path_current_file, Path('data')) if dict_path is None else dict_path
+        print(self.dict_path)
+        self.neg_words_filename = self.dict_path/'obscene_words.txt' if neg_words_fn is None else self.dict_path/neg_words_fn
         self.frequent_letters_filename = self.dict_path/'ngrams/freq_letters.txt' if freq_letters_fn is None else self.dict_path/freq_letters_fn
         self.bi_grams_filename = self.dict_path/'ngrams/bi_grams.txt' if bigrams_fn is None else self.dict_path/bigrams_fn
         self.tri_grams_filename = self.dict_path/'ngrams/tri_grams.txt' if trigrams_fn is None else self.dict_path/trigrams_fn

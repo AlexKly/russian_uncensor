@@ -1,10 +1,12 @@
 from pathlib import Path
 import re, itertools, marisa_trie
-from rd_wr_util import rd_wr_module
+from russian_uncensor.rd_wr_util import rd_wr_module
+
+path_current_file = Path(__file__).parent
 
 
-class Uncensor():
-    def __init__(self, dict_path, freq_letter_fn=None, bi_grams_fn=None, tri_grams_fn=None):
+class Uncensor:
+    def __init__(self, dict_path=None, freq_letter_fn=None, bi_grams_fn=None, tri_grams_fn=None):
         """ Init Uncensor.
 
         :param dict_path: path to dictionaries directory.
@@ -15,13 +17,10 @@ class Uncensor():
         :return:
         """
         # Paths:
-        dict_path = Path(dict_path)
-        if not dict_path.is_dir():
-            assert False, f'Dir path "{dict_path}" not found!'
-        self.dict_path = dict_path
-        self.freq_letters_fn = self.dict_path/'freq_letters.txt' if freq_letter_fn is None else self.dict_path/freq_letter_fn
-        self.bi_grams_fn = self.dict_path/'bi_grams.txt' if bi_grams_fn is None else self.dict_path/bi_grams_fn
-        self.tri_grams_fn = self.dict_path/'tri_grams.txt' if tri_grams_fn is None else self.dict_path/tri_grams_fn
+        self.dict_path = Path.joinpath(path_current_file, Path('data')) if dict_path is None else dict_path
+        self.freq_letters_fn = self.dict_path/'ngrams/freq_letters.txt' if freq_letter_fn is None else self.dict_path/freq_letter_fn
+        self.bi_grams_fn = self.dict_path/'ngrams/bi_grams.txt' if bi_grams_fn is None else self.dict_path/bi_grams_fn
+        self.tri_grams_fn = self.dict_path/'ngrams/tri_grams.txt' if tri_grams_fn is None else self.dict_path/tri_grams_fn
         # Dictionaries:
         self.freq_letters = marisa_trie.Trie(rd_wr_module(path_dict=self.freq_letters_fn))
         self.bi_grams = marisa_trie.Trie(rd_wr_module(path_dict=self.bi_grams_fn))
