@@ -9,5 +9,5 @@ ws.save_n_grams()
 
 # Check uncensor using prepared ngrams
 uc = uncensored.Uncensor()
-print(uc.uncensor_masked('х*й'))
-print(uc.uncensor_splitted('х у й'))
+print(uc.uncensor_masked('Х*й'))
+print(uc.uncensor_splitted('Х у й'))

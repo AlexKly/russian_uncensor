@@ -1,5 +1,5 @@
 from pathlib import Path
-import re, itertools, marisa_trie
+import re, string, itertools, marisa_trie
 from russian_uncensor.rd_wr_util import rd_wr_module
 
 path_current_file = Path(__file__).parent
@@ -27,6 +27,7 @@ class Uncensor:
         self.tri_grams = marisa_trie.Trie(rd_wr_module(path_dict=self.tri_grams_fn))
         # Parameters:
         self.win_len = 3
+        self.delimiters = string.punctuation
 
 
     def moving_window(self, seq):
@@ -78,6 +79,8 @@ class Uncensor:
         :param word: input text.
         :return: uncensored (unmasked) variants.
         """
+        word = word.lower()
+        word = word.translate({ord(ch): "*" for ch in self.delimiters})
         variants = self.find_variants(word=word)
         if variants is None:
             return word
@@ -140,13 +143,13 @@ class Uncensor:
         return uncensored_variants
 
 
-    def uncensor_splitted(self, sentence):
+    def uncensor_splitted(self, sequence):
         """ Find obscene words in splitted text.
 
         :param sentence: input text.
         :return: uncensored (united) variants.
         """
-        words = sentence.split(' ')
+        words = re.split(f'[{self.delimiters} ]', sequence.lower())
         variants = list()
         for i in range(len(words) - 1):
             prev_word = words[0]
