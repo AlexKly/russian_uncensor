@@ -1,11 +1,11 @@
-import os
+from pathlib import Path
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
-here = os.path.abspath(os.path.dirname(__file__))
-long_description = open(os.path.join(here, 'README.md')).read()
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='russian_uncensor',
@@ -13,7 +13,8 @@ setup(
     version='0.0.1',
     license='MIT',
     description='Uncensor for russian masked or separated obscene words based on frequent letters, bi- and tri-grams analysis',
-    long_description='',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Alex Klyuev',
     author_email='Klyukvanstalker@gmail.com',
     url='https://github.com/AlexKly/russian_uncensor',
