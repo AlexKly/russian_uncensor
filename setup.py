@@ -1,7 +1,11 @@
+import os
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
+
+here = os.path.abspath(os.path.dirname(__file__))
+long_description = open(os.path.join(here, 'README.md')).read()
 
 setup(
     name='russian_uncensor',
