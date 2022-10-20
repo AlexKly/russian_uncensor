@@ -7,7 +7,7 @@ path_current_file = Path(__file__).parent
 
 class Uncensor:
     def __init__(self, dict_path=None, freq_letter_fn=None, bi_grams_fn=None, tri_grams_fn=None):
-        """ Init Uncensor.
+        """ Init Uncensor class.
 
         :param dict_path: path to dictionaries directory.
         :param freq_letter_fn: frequent letters in obscene words filename.
@@ -83,7 +83,7 @@ class Uncensor:
         word = word.translate({ord(ch): "*" for ch in self.delimiters})
         variants = self.find_variants(word=word)
         if variants is None:
-            return word
+            return False, word
         k = list(variants.keys())
         k.append(0)
         uncensored_variants = list()
@@ -140,7 +140,7 @@ class Uncensor:
                     word_listed[ind_particles[0]] = comb
                     uncensored_variants.append(''.join(word_listed))
 
-        return uncensored_variants
+        return True, uncensored_variants
 
 
     def uncensor_splitted(self, sequence):
@@ -163,7 +163,8 @@ class Uncensor:
                     ind_words.append(ind + 1)
                     ind += 1
                     prev_word = word
-                    variants.append((sentence_str, ind_words))
+                    #variants.append((sentence_str, ind_words))
+                    variants.append(sentence_str)
                 else:
                     break
 
