@@ -24,6 +24,9 @@ Supported main functions:
 
 Example how to use it is [here](https://github.com/AlexKly/russian_uncensor/blob/master/example.py)
 
+Also, you can check tests to understand how to use library.
+[Check this](https://github.com/AlexKly/russian_uncensor/blob/master/tests/test_russian_uncensor.py)
+
 ### Quickstart
 If you want to run uncensor quickly and use it with default settings, you need to import `Uncensor()` and 
 use following functions:

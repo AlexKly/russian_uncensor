@@ -163,8 +163,8 @@ class Uncensor:
                     ind_words.append(ind + 1)
                     ind += 1
                     prev_word = word
-                    #variants.append((sentence_str, ind_words))
-                    variants.append(sentence_str)
+                    variants.append((sentence_str, ind_words))
+                    #variants.append(sentence_str)
                 else:
                     break
 
