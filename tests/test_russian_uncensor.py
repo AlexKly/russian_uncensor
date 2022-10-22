@@ -41,23 +41,42 @@ def test_example(text):
     path_data = Path(path_data)
     obscene_words = marisa_trie.Trie(rd_wr_module(path_dict=path_data))
     # Check masked:
-    u_text = list()
-    done = False
+    u_m_text = list()
+    done = False    # For example, we will take the first variant
     for word in text.split(' '):
-        u_word = u.uncensor_masked(word=word)
-        if u_word[0]:
-            for u_w in u_word[1]:
-                if u_w in list(obscene_words) and not done:
-                    u_text.append(u_w)
+        u_m_word = u.uncensor_masked(word=word)
+        if u_m_word[0]:
+            for u_m_w in u_m_word[1]:
+                if u_m_w in list(obscene_words) and not done:
+                    u_m_text.append(u_m_w)
+                    done = True
         else:
-            u_text.append(u_word[1])
-    u_text = ' '.join(u_text)
+            u_m_text.append(u_m_word[1])
+    u_m_text = ' '.join(u_m_text)
 
     # Check splitted:
-    print(u.uncensor_splitted(sequence=text))
+    u_s_text = list()
+    u_s_ind = list()
+    done = False    # For example, we will take the first variant
+    u_s_words = u.uncensor_splitted(sequence=text)
+    for u_s_w in u_s_words:
+        if u_s_w[0] in list(obscene_words) and not done:
+            u_s_text_tmp = ''.join([text.split(' ')[ind] for ind in u_s_w[1]])
+            u_s_ind = u_s_w[1]
+            done = True
+    ind = 0
+    pasted = False
+    for word in text.split(' '):
+        if ind in u_s_ind:
+            if not pasted:
+                u_s_text.append(u_s_text_tmp)
+                pasted = True
+        else:
+            u_s_text.append(word)
+        ind += 1
+    u_s_text = ' '.join(u_s_text)
 
-
-
+    print('Unmasked:', u_m_text, '| Unsplitted:', u_s_text)
 
 
 class TestRussianUncensor(unittest.TestCase):
@@ -70,4 +89,7 @@ class TestRussianUncensor(unittest.TestCase):
     def test_t_u_s_u1(self): test_uncensored_splitted(text='н а х у й', referance=['нахуй'])    # Success
     def test_t_u_s_u2(self): test_uncensored_splitted(text='на хуй', referance=['нахуй'])   # Success
     def test_t_u_s_u3(self): test_uncensored_splitted(text='на|х!уй', referance=['нахуй'])  # Success
-    def test_e_u0(self): test_example(text='Это пи здец полный')
+    def test_e_u0(self): test_example(text='Это пи зде ц полный')
+    def test_e_u1(self): test_example(text='Это п*здец полный')
+    def test_e_u2(self): test_example(text='Очень х у евый')
+    def test_e_u3(self): test_example(text='Очень х*ев*й')

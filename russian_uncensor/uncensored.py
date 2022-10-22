@@ -161,10 +161,9 @@ class Uncensor:
                 if prev_word[-1] in self.freq_letters and word[0] in self.freq_letters and prev_word[-1] + word[0] in self.bi_grams:
                     sentence_str += word
                     ind_words.append(ind + 1)
+                    variants.append((sentence_str, ind_words.copy()))
                     ind += 1
                     prev_word = word
-                    variants.append((sentence_str, ind_words))
-                    #variants.append(sentence_str)
                 else:
                     break
 

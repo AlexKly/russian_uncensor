@@ -73,4 +73,7 @@ power of your origin dictionary, and the less clear the word, the more variants 
 to recover, then **Uncensor** will return *None*. Nowadays, **Uncensor** can not to perform substitutions and return
 variants if in uncensored words masked more than 3 consecutive letters. Notice that.
 
+When you perform `Uncensor().uncensor_splitted()` method return set ***(particles positions in text, united particle)***.
+You can use particles positions to unite these particles into one word correctly.
+
 ***Good Luck and Have Fun!***
