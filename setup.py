@@ -31,4 +31,11 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
+    data_files=[
+        ('obscene_words', ['russian_uncensor/data/obscene_words.txt']),
+        ('freq_letters', ['russian_uncensor/data/ngrams/freq_letters.txt']),
+        ('bi_grams', ['russian_uncensor/data/ngrams/bi_grams.txt']),
+        ('tri_grams', ['russian_uncensor/data/ngrams/tri_grams.txt']),
+
+    ],
 )
