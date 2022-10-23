@@ -10,7 +10,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name='russian_uncensor',
     packages=['russian_uncensor'],
-    version='0.0.4',
+    version='0.0.5',
     license='MIT',
     description='Uncensor for russian masked or separated obscene words based on frequent letters, bi- and tri-grams analysis',
     long_description=long_description,
@@ -32,10 +32,11 @@ setup(
         'Programming Language :: Python :: 3.10',
     ],
     data_files=[
-        ('obscene_words', ['russian_uncensor/data/obscene_words.txt']),
-        ('freq_letters', ['russian_uncensor/data/ngrams/freq_letters.txt']),
-        ('bi_grams', ['russian_uncensor/data/ngrams/bi_grams.txt']),
-        ('tri_grams', ['russian_uncensor/data/ngrams/tri_grams.txt']),
-
+        ('russian_uncensor/data', ['russian_uncensor/data/obscene_words.txt']),
+        ('russian_uncensor/data/ngrams', [
+            'russian_uncensor/data/ngrams/freq_letters.txt',
+            'russian_uncensor/data/ngrams/bi_grams.txt',
+            'russian_uncensor/data/ngrams/tri_grams.txt',
+        ]),
     ],
 )
