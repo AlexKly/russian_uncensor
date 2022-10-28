@@ -10,7 +10,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name='russian_uncensor',
     packages=['russian_uncensor'],
-    version='0.0.7',
+    version='0.0.8',
     license='MIT',
     description='Uncensor for russian masked or separated obscene words based on frequent letters, bi- and tri-grams analysis',
     long_description=long_description,
