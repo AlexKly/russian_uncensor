@@ -32,12 +32,11 @@ setup(
         'Programming Language :: Python :: 3.10',
     ],
     data_files=[
-        ('/russian_uncensor/data', ['russian_uncensor/data/obscene_words.txt']),
-        ('/russian_uncensor/data/ngrams', [
-            'russian_uncensor/data/ngrams/freq_letters.txt',
-            'russian_uncensor/data/ngrams/bi_grams.txt',
-            'russian_uncensor/data/ngrams/tri_grams.txt',
+        (f'{this_directory}/russian_uncensor/data', [f'{this_directory}/russian_uncensor/data/obscene_words.txt']),
+        (f'{this_directory}/russian_uncensor/data/ngrams', [
+            f'{this_directory}/russian_uncensor/data/ngrams/freq_letters.txt',
+            f'{this_directory}/russian_uncensor/data/ngrams/bi_grams.txt',
+            f'{this_directory}/russian_uncensor/data/ngrams/tri_grams.txt',
         ]),
     ],
-    include_package_data=True,
 )
