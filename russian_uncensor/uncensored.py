@@ -18,13 +18,25 @@ class Uncensor:
         """
         # Paths:
         self.dict_path = Path.joinpath(path_current_file, Path('data')) if dict_path is None else dict_path
-        self.freq_letters_fn = self.dict_path/'ngrams/freq_letters.txt' if freq_letter_fn is None else self.dict_path/freq_letter_fn
-        self.bi_grams_fn = self.dict_path/'ngrams/bi_grams.txt' if bi_grams_fn is None else self.dict_path/bi_grams_fn
-        self.tri_grams_fn = self.dict_path/'ngrams/tri_grams.txt' if tri_grams_fn is None else self.dict_path/tri_grams_fn
+        self.freq_letters_fn = self.dict_path/'ngrams/freq_letters.marisa' \
+            if freq_letter_fn is None else self.dict_path/freq_letter_fn
+        self.bi_grams_fn = self.dict_path/'ngrams/bi_grams.marisa' \
+            if bi_grams_fn is None else self.dict_path/bi_grams_fn
+        self.tri_grams_fn = self.dict_path/'ngrams/tri_grams.marisa' \
+            if tri_grams_fn is None else self.dict_path/tri_grams_fn
         # Dictionaries:
-        self.freq_letters = marisa_trie.Trie(rd_wr_module(path_dict=self.freq_letters_fn))
-        self.bi_grams = marisa_trie.Trie(rd_wr_module(path_dict=self.bi_grams_fn))
-        self.tri_grams = marisa_trie.Trie(rd_wr_module(path_dict=self.tri_grams_fn))
+        if str(self.freq_letters_fn)[-4:] == '.txt':
+            self.freq_letters = marisa_trie.Trie(rd_wr_module(path_dict=self.freq_letters_fn))
+        elif str(self.freq_letters_fn)[-7:] == '.marisa':
+            self.freq_letters = marisa_trie.Trie().load(self.freq_letters_fn)
+        if str(self.bi_grams_fn)[-4:] == '.txt':
+            self.bi_grams = marisa_trie.Trie(rd_wr_module(path_dict=self.bi_grams_fn))
+        elif str(self.bi_grams_fn)[-7:] == '.marisa':
+            self.bi_grams = marisa_trie.Trie().load(self.bi_grams_fn)
+        if str(self.tri_grams_fn)[-4:] == '.txt':
+            self.tri_grams = marisa_trie.Trie(rd_wr_module(path_dict=self.tri_grams_fn))
+        elif str(self.tri_grams_fn)[-7:] == '.marisa':
+            self.tri_grams = marisa_trie.Trie().load(self.tri_grams_fn)
         # Parameters:
         self.win_len = 3
         self.delimiters = string.punctuation

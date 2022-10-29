@@ -7,7 +7,8 @@ path_current_file = Path(__file__).parent
 
 
 class WordStats:
-    def __init__(self, dict_path=None, neg_words_fn=None, freq_letters_fn=None, bigrams_fn=None, trigrams_fn=None, debug=False):
+    def __init__(self, dict_path=None, neg_words_fn=None, freq_letters_fn=None, bigrams_fn=None, trigrams_fn=None,
+                 ext='.marisa', debug=False):
         """ Init WordStats class.
 
         :param dict_path: common path to data files dir (str).
@@ -15,16 +16,21 @@ class WordStats:
         :param freq_letters_fn: frequent letters used in obscene words file name (str).
         :param bigrams_fn: frequent bi-grams used in obscene words file name (str).
         :param trigrams_fn: frequent tri-grams used in obscene words file name (str).
+        :param ext: extension of output files. .txt or .marisa (str).
         :param debug: turn on instruments for debug (bool).
         :return:
         """
         # File paths:
         self.dict_path = Path.joinpath(path_current_file, Path('data')) if dict_path is None else dict_path
-        print(self.dict_path)
-        self.neg_words_filename = self.dict_path/'obscene_words.txt' if neg_words_fn is None else self.dict_path/neg_words_fn
-        self.frequent_letters_filename = self.dict_path/'ngrams/freq_letters.txt' if freq_letters_fn is None else self.dict_path/freq_letters_fn
-        self.bi_grams_filename = self.dict_path/'ngrams/bi_grams.txt' if bigrams_fn is None else self.dict_path/bigrams_fn
-        self.tri_grams_filename = self.dict_path/'ngrams/tri_grams.txt' if trigrams_fn is None else self.dict_path/trigrams_fn
+        self.ext = ext
+        self.neg_words_filename = self.dict_path/f'obscene_words.marisa' \
+            if neg_words_fn is None else self.dict_path/neg_words_fn
+        self.frequent_letters_filename = self.dict_path/f'ngrams/freq_letters{self.ext}' \
+            if freq_letters_fn is None else self.dict_path/freq_letters_fn
+        self.bi_grams_filename = self.dict_path/f'ngrams/bi_grams{self.ext}' \
+            if bigrams_fn is None else self.dict_path/bigrams_fn
+        self.tri_grams_filename = self.dict_path/f'ngrams/tri_grams{self.ext}' \
+            if trigrams_fn is None else self.dict_path/trigrams_fn
         # Crete dir (if it doesnt exist)
         if not os.path.exists(path=self.dict_path/'ngrams'):
             os.mkdir(path=self.dict_path/'ngrams')
@@ -39,7 +45,10 @@ class WordStats:
         :return: Counter of the frequent letters in obscene words (dict).
         """
         frequent_letters_cnt = Counter()
-        neg_words = marisa_trie.Trie(rd_wr_module(self.neg_words_filename))
+        if str(self.neg_words_filename)[-4:] == '.txt':
+            neg_words = marisa_trie.Trie(rd_wr_module(self.neg_words_filename))
+        elif str(self.neg_words_filename)[-7:] == '.marisa':
+            neg_words = marisa_trie.Trie().load(self.neg_words_filename)
         for word in neg_words:
             for letter in word:
                 if letter in self.ru_alphabet:
@@ -55,7 +64,10 @@ class WordStats:
         :return: Counter of the bi-grams in obscene words (dict).
         """
         bigrams_cnt = Counter()
-        neg_words = marisa_trie.Trie(rd_wr_module(self.neg_words_filename))
+        if str(self.neg_words_filename)[-4:] == '.txt':
+            neg_words = marisa_trie.Trie(rd_wr_module(self.neg_words_filename))
+        elif str(self.neg_words_filename)[-7:] == '.marisa':
+            neg_words = marisa_trie.Trie().load(self.neg_words_filename)
         for word in neg_words:
             for i in range(len(word) - 1):
                 if word[i] in self.ru_alphabet and word[i + 1] in self.ru_alphabet:
@@ -71,7 +83,10 @@ class WordStats:
         :return: Counter of the tri-grams in obscene words (dict).
         """
         trigrams_cnt = Counter()
-        neg_words = marisa_trie.Trie(rd_wr_module(self.neg_words_filename))
+        if str(self.neg_words_filename)[-4:] == '.txt':
+            neg_words = marisa_trie.Trie(rd_wr_module(self.neg_words_filename))
+        elif str(self.neg_words_filename)[-7:] == '.marisa':
+            neg_words = marisa_trie.Trie().load(self.neg_words_filename)
         for word in neg_words:
             for i in range(len(word) - 2):
                 if word[i] in self.ru_alphabet and word[i + 1] in self.ru_alphabet and word[i + 2] in self.ru_alphabet:
@@ -99,4 +114,8 @@ class WordStats:
         for group in zip(n_grams, filenames):
             if self.debug:
                 print(f'Filename: {group[1]} Content: {group[0]}')
-            rd_wr_module(path_dict=group[1], input_dict=group[0], mode='w')
+            if self.ext == '.txt':
+                rd_wr_module(path_dict=group[1], input_dict=group[0], mode='w')
+            elif self.ext == '.marisa':
+                marisa_trie.Trie(group[0]).save(group[1])
+
