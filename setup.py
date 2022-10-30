@@ -7,8 +7,6 @@ except ImportError:
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
-DATA_PATH = pkg_resources.resource_filename('<package name>', 'data/')
-DB_FILE = pkg_resources.resource_filename('<package name>', 'data/sqlite.db')
 
 setup(
     name='russian_uncensor',
