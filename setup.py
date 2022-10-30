@@ -1,3 +1,4 @@
+import pkg_resources
 from pathlib import Path
 try:
     from setuptools import setup
@@ -6,11 +7,13 @@ except ImportError:
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
+DATA_PATH = pkg_resources.resource_filename('<package name>', 'data/')
+DB_FILE = pkg_resources.resource_filename('<package name>', 'data/sqlite.db')
 
 setup(
     name='russian_uncensor',
     packages=['russian_uncensor'],
-    version='0.1.0',
+    version='0.1.7',
     license='MIT',
     description='Uncensor for russian masked or separated obscene words based on frequent letters, bi- and tri-grams analysis',
     long_description=long_description,
@@ -31,13 +34,6 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
-    package_data={
-        'russian_uncensor/data': ['obscene_words.marisa'],
-        'russian_uncensor/data/ngrams': [
-            'freq_letters.marisa',
-            'bi_grams.marisa',
-            'tri_grams.marisa'
-        ],
-    },
-    include_package_data=True,
+    package_dir={'russian_uncensor': 'russian_uncensor'},
+    package_data={'russian_uncensor': ['data/*.marisa', 'data/ngrams/*.marisa']},
 )
