@@ -30,7 +30,7 @@ Also, you can check tests to understand how to use library.
 ### Quickstart
 If you want to run uncensor quickly and use it with default settings, you need to import `Uncensor()` and 
 use following functions:
-```
+```python
 # Import uncensor:
 from russian_uncensor import uncensored
 
@@ -50,7 +50,7 @@ dictionaries all possible n-grams and frequent single letters, which you can mee
 use default settings, you don't need to use this class, but if you have custom dictionary of swear words you use it.
 Specify the path to your file as a parameter, and also you can change the location of the stats dictionaries which 
 you will get in output.
-```
+```python
 custom_ws = WordStats(
     dict_path=custom_path,
     neg_words_fn=my_dict_neg_words_filename_i,
